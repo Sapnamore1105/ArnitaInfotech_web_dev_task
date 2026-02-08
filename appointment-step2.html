@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Doctor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <h2 class="logo">MedCare Plus</h2>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="specialities.html">Specialities</a>
+    <a href="doctors.html">Doctors</a>
+    <a href="admin-login.html">Admin</a>
+    <a class="btn" href="appointment.html">Book Appointment</a>
+  </nav>
+</header>
+
+<section class="appointment">
+  <h1>Book an Appointment</h1>
+  <p class="subtitle">
+    Schedule your consultation with our expert doctors.
+  </p>
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step done">1</div>
+    <div class="line active"></div>
+    <div class="step active">2</div>
+    <div class="line"></div>
+    <div class="step">3</div>
+  </div>
+
+  <!-- Card -->
+  <div class="appointment-card">
+    <h2>Select Doctor</h2>
+
+    <form id="step2Form">
+      <label>Choose a Doctor *</label>
+
+      <select id="doctor" required>
+        <option value="">Select a doctor</option>
+        <option value="Dr. Sarah Johnson - Cardiology">Dr. Sarah Johnson – Cardiology</option>
+        <option value="Dr. Michael Chen - Neurology">Dr. Michael Chen – Neurology</option>
+        <option value="Dr. James Wilson - Orthopedics">Dr. James Wilson – Orthopedics</option>
+        <option value="Dr. Emily Rodriguez - Pediatrics">Dr. Emily Rodriguez – Pediatrics</option>
+        <option value="Dr. Priya Sharma - Gynecology">Dr. Priya Sharma – Gynecology</option>
+        <option value="Dr. Anil Kumar - ENT">Dr. Anil Kumar – ENT</option>
+        <option value="Dr. David Kim - Dermatology">Dr. David Kim – Dermatology</option>
+        <option value="Dr. Rajesh Patel - General Medicine">Dr. Rajesh Patel – General Medicine</option>
+      </select>
+
+      <div class="form-btn between">
+        <a href="appointment.html" class="btn-outline">← Back</a>
+        <button type="button" class="btn" onclick="saveStep2()">Next →</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+function saveStep2() {
+  const doctor = document.getElementById("doctor").value;
+
+  if (!doctor) {
+    alert("Please select a doctor");
+    return;
+  }
+
+  // Save doctor selection
+  localStorage.setItem("step2", doctor);
+
+  // Go to Step 3
+  window.location.href = "appointment-step3.html";
+}
+</script>
+
+</body>
+</html>

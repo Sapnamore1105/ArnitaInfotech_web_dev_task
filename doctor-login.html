@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctor Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="admin">
+  <div class="admin-card">
+    <h2>Doctor Login</h2>
+
+   <form onsubmit="doctorLogin(event)">
+  <label>Select Doctor</label>
+
+<select id="doctor" class="dropdown" required>
+  <option value="">Select Doctor</option>
+  <option>Dr. Sarah Johnson – Cardiology</option>
+  <option>Dr. Michael Chen – Neurology</option>
+  <option>Dr. James Wilson – Orthopedics</option>
+  <option>Dr. Emily Rodriguez – Pediatrics</option>
+  <option>Dr. Priya Sharma – Gynecology</option>
+  <option>Dr. Anil Kumar – ENT</option>
+  <option>Dr. David Kim – Dermatology</option>
+  <option>Dr. Rajesh Patel – General Medicine</option>
+</select>
+
+
+  <label>Password</label>
+  <input type="password" id="password" required>
+
+  <button class="btn">Login</button>
+</form>
+
+  </div>
+</section>
+
+<script>
+function doctorLogin(e) {
+  e.preventDefault();
+
+  const doctorName = document.getElementById("doctor").value;
+  const password = document.getElementById("password").value;
+
+  // Demo password
+  if (password !== "doctor123") {
+    alert("❌ Invalid password");
+    return;
+  }
+
+  // Save logged-in doctor
+  localStorage.setItem("loggedDoctor", doctorName);
+
+  // Redirect to dashboard
+  window.location.href = "doctor-dashboard.html";
+}
+</script>
+
+
+</body>
+</html>

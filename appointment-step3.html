@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Date & Time</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <h2 class="logo">MedCare Plus</h2>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="specialities.html">Specialities</a>
+    <a href="doctors.html">Doctors</a>
+    <a href="admin-login.html">Admin</a>
+    <a class="btn" href="appointment.html">Book Appointment</a>
+  </nav>
+</header>
+
+<section class="appointment">
+  <h1>Book an Appointment</h1>
+  <p class="subtitle">
+    Choose a suitable date and time for your consultation.
+  </p>
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step done">1</div>
+    <div class="line active"></div>
+    <div class="step done">2</div>
+    <div class="line active"></div>
+    <div class="step active">3</div>
+  </div>
+
+  <!-- Card -->
+  <div class="appointment-card">
+    <h2>Select Date & Time</h2>
+
+    <form onsubmit="confirmAppointment(event)">
+      <label>Appointment Date *</label>
+      <input type="date" id="date" required />
+
+      <label>Time Slot *</label>
+      <select id="time" required>
+        <option value="">Select time slot</option>
+        <option>09:00 – 10:00</option>
+        <option>10:00 – 11:00</option>
+        <option>04:00 – 05:00</option>
+        <option>05:00 – 06:00</option>
+      </select>
+
+      <div class="form-btn between">
+        <a href="appointment-step2.html" class="btn-outline">← Back</a>
+        <button type="submit" class="btn">Confirm Appointment</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+const dateInput = document.getElementById("date");
+
+/* Disable Sunday when selecting date */
+dateInput.addEventListener("change", function () {
+  const selectedDate = new Date(this.value);
+
+  if (selectedDate.getDay() === 0) { // 0 = Sunday
+    alert("❌ Appointments are not available on Sunday.");
+    this.value = "";
+  }
+});
+
+function confirmAppointment(e) {
+  e.preventDefault();
+
+  const selectedDate = new Date(dateInput.value);
+
+  // Safety check (VERY IMPORTANT)
+  if (selectedDate.getDay() === 0) {
+    alert("❌ You cannot place an appointment on Sunday.");
+    return;
+  }
+
+  const step1 = JSON.parse(localStorage.getItem("step1"));
+  const step2 = localStorage.getItem("step2");
+
+  if (!step1 || !step2) {
+    alert("Missing appointment details. Please start again.");
+    window.location.href = "appointment.html";
+    return;
+  }
+
+  const newAppointment = {
+    id: Date.now(),
+    name: step1.name,
+    email: step1.email,
+    phone: step1.phone,
+    doctor: step2,
+    date: dateInput.value,
+    time: document.getElementById("time").value,
+    status: "Pending"
+  };
+
+  const appointments =
+    JSON.parse(localStorage.getItem("appointments")) || [];
+
+  appointments.push(newAppointment);
+  localStorage.setItem("appointments", JSON.stringify(appointments));
+
+  alert("✅ Appointment booked successfully!");
+  window.location.href = "my-appointments.html";
+}
+</script>
+
+
+</body>
+</html>

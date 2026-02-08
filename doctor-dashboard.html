@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctor Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <h2 class="logo">MedCare Plus</h2>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="doctor-login.html" onclick="logoutDoctor()">Logout</a>
+  </nav>
+</header>
+
+<section class="admin">
+  <div class="admin-card wide">
+    <h2>Doctor Appointments</h2>
+    <div id="doctorAppointments"></div>
+  </div>
+</section>
+
+<script>
+const loggedDoctor = localStorage.getItem("loggedDoctor");
+const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+const box = document.getElementById("doctorAppointments");
+
+// Safety check
+if (!loggedDoctor) {
+  alert("Please login first");
+  window.location.href = "doctor-login.html";
+}
+
+// Normalize doctor name (remove speciality & dash issues)
+const doctorKey = loggedDoctor.split("–")[0].trim();
+
+// FILTER APPOINTMENTS SAFELY
+const myAppointments = appointments.filter(a =>
+  a.doctor && a.doctor.includes(doctorKey)
+);
+
+if (myAppointments.length === 0) {
+  box.innerHTML = "<p>No appointments assigned to you.</p>";
+} else {
+  box.innerHTML = myAppointments.map(a => `
+    <div class="appointment-card user">
+      <p><strong>Patient:</strong> ${a.name}</p>
+      <p><strong>Doctor:</strong> ${a.doctor}</p>
+      <p><strong>Date:</strong> ${a.date}</p>
+      <p><strong>Time:</strong> ${a.time}</p>
+      <p><strong>Status:</strong> ${a.status}</p>
+    </div>
+  `).join("");
+}
+
+function logoutDoctor() {
+  localStorage.removeItem("loggedDoctor");
+}
+</script>
+
+</body>
+</html>

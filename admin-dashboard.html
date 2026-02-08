@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <h2 class="logo">MedCare Plus</h2>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="admin-login.html">Logout</a>
+  </nav>
+</header>
+
+<section class="admin">
+  <div class="admin-card wide">
+    <h2>Admin – Manage Appointments</h2>
+
+    <div id="adminAppointment"></div>
+    <hr>
+
+<h2>Manage Appointment Slots</h2>
+
+<form onsubmit="addSlot(event)">
+  <label>Doctor</label>
+  <select id="slotDoctor" required>
+    <option>Dr. Sarah Johnson - Cardiology</option>
+    <option>Dr. Michael Chen - Neurology</option>
+    <option>Dr. James Wilson - Orthopedics</option>
+    <option>Dr. Emily Rodriguez - Pediatrics</option>
+  </select>
+
+  <label>Date</label>
+  <input type="date" id="slotDate" required>
+
+  <label>Time Slot</label>
+  <input type="text" id="slotTime" placeholder="10:00 – 11:00" required>
+
+  <button class="btn">Add Slot</button>
+</form>
+
+<h3>Available Slots</h3>
+<ul id="slotList"></ul>
+
+  </div>
+</section>
+
+<script>
+const appointments =
+  JSON.parse(localStorage.getItem("appointments")) || [];
+
+const box = document.getElementById("adminAppointment");
+
+if (appointments.length === 0) {
+  box.innerHTML = "<p>No appointments found.</p>";
+} else {
+  box.innerHTML = appointments
+    .map((a, index) => {
+      let actionArea = "";
+
+      if (a.status === "Pending") {
+        actionArea = `
+          <button class="btn" onclick="updateStatus(${index}, 'Confirmed')">
+            Approve
+          </button>
+          <button class="btn-outline" onclick="updateStatus(${index}, 'Rejected')">
+            Reject
+          </button>
+        `;
+      } 
+      else if (a.status === "Confirmed") {
+        actionArea = `
+          <p class="admin-status approved">
+            ✅ You approved this appointment
+          </p>
+        `;
+      } 
+      else if (a.status === "Rejected") {
+        actionArea = `
+          <p class="admin-status rejected">
+            ❌ You rejected this appointment
+          </p>
+        `;
+      }
+
+      return `
+        <div class="appointment-card user">
+          <p><strong>Name:</strong> ${a.name}</p>
+          <p><strong>Doctor:</strong> ${a.doctor}</p>
+          <p><strong>Date:</strong> ${a.date}</p>
+          <p><strong>Time:</strong> ${a.time}</p>
+          <p><strong>Status:</strong> ${a.status}</p>
+
+          ${actionArea}
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function updateStatus(index, status) {
+  appointments[index].status = status;
+  localStorage.setItem("appointments", JSON.stringify(appointments));
+  location.reload();
+}
+</script>
+<script>
+function addSlot(e) {
+  e.preventDefault();
+
+  // ❌ Block Sunday slot creation
+  if (new Date(slotDate.value).getDay() === 0) {
+    alert("Cannot create slots on Sunday");
+    return;
+  }
+
+  const slot = {
+    doctor: slotDoctor.value,
+    date: slotDate.value,
+    time: slotTime.value
+  };
+
+  const slots = JSON.parse(localStorage.getItem("slots")) || [];
+  slots.push(slot);
+  localStorage.setItem("slots", JSON.stringify(slots));
+
+  alert("Slot added successfully");
+
+  // Optional: clear form
+  slotDate.value = "";
+  slotTime.value = "";
+
+  showSlots();
+}
+
+
+function showSlots() {
+  const slots = JSON.parse(localStorage.getItem("slots")) || [];
+  slotList.innerHTML = slots
+    .map(s => `<li>${s.doctor} | ${s.date} | ${s.time}</li>`)
+    .join("");
+}
+
+showSlots();
+</script>
+
+
+
+
+</body>
+</html>
