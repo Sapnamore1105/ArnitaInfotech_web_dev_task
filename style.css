@@ -666,3 +666,63 @@ body {
   margin-bottom: 16px;
   cursor: pointer;
 }
+.doctors-grid,
+.specialities-grid,
+.facilities-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 15px;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero img {
+    width: 100%;
+    height: auto;
+  }
+
+  .navbar nav {
+    justify-content: center;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .appointment-card,
+  .doctor-card,
+  .speciality-card {
+    padding: 15px;
+  }
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
